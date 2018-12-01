@@ -1,0 +1,26 @@
+
+---
+- hosts: centos
+  sudo: yes
+  user: ansible
+  tasks:
+    - name: copy repo
+      copy: src=/etc/yum.repos.d/epel.repo dest=/etc/yum.repos.d/epel.repo
+    - name: install wget
+      yum: name=wget state=installed update_cache=yes
+    - name: install mysql-python
+      yum: name=MySQL-python state=installed
+    - name: down lib
+      get_url: url=http://repo.mysql.com/mysql-community-release-el7-5.noarch.rpm dest=/usr/mysql/mysql.noarch.rpm
+    - name: install the rpm
+      yum: name=/usr/mysql/mysql.noarch.rpm state=present
+    - name: install mysql
+      yum: name=mysql-server state=installed
+    - name: start mysqk service
+      service: name=mysqld state=restarted
+    - name: creat db
+      mysql_db: name=testdb state=present
+    - name: creare_db_user
+      mysql_user: name=clen password=clen priv=*.*:ALL host='%' state=present login_unix_socket=/var/lib/mysql/mysql.sock
+    - name: resart mysql
+      service: name=mysql state=restarted
