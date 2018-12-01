@@ -1,4 +1,3 @@
-
 ---
 - hosts: centos
   sudo: yes
@@ -14,6 +13,8 @@
       get_url: url=http://repo.mysql.com/mysql-community-release-el7-5.noarch.rpm dest=/usr/mysql/mysql.noarch.rpm
     - name: install the rpm
       yum: name=/usr/mysql/mysql.noarch.rpm state=present
+    - name: copy .my.cnf from local machine to remote machine
+      copy: src=/etc/ansible/.my.cnf dest=/root/.my.cnf
     - name: install mysql
       yum: name=mysql-server state=installed
     - name: start mysqk service
