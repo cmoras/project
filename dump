@@ -2,9 +2,8 @@ import csv
 import pymysql
 
 with conn.cursor() as cursor:
-	with open("wether.csv") as it:
-		for line in it:
-			num1=line.split(',')[0]
-			num2=line.split(',')[1]
-			cursor.execute("insert into clen1 values (%s,%s)", (num1,num2))
+	with open('wether.csv', newline='') as f:
+		reader = csv.reader(f)
+		for row in reader:
+			cursor.execute("insert into clen1 values (%s,%s)", (row[0],row[1]))
 			conn.commit()
